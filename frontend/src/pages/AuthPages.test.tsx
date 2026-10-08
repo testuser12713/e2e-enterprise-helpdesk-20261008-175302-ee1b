@@ -28,12 +28,25 @@ function renderWithProviders(ui: ReactNode, path: string) {
   )
 }
 
-/** Replace `fetch` with a single canned JSON response. */
-function mockFetch(status: number, body: unknown) {
-  const fn = vi.fn().mockResolvedValue({
-    ok: status >= 200 && status < 300,
-    status,
-    text: async () => JSON.stringify(body),
+/**
+ * Replace `fetch` with a canned JSON response. When `routeBodies` is given,
+ * the first key contained in the request URL wins, so a single stub can serve
+ * e.g. the login payload and the dashboard metrics the app loads right after.
+ */
+function mockFetch(
+  status: number,
+  body: unknown,
+  routeBodies: Record<string, unknown> = {},
+) {
+  const fn = vi.fn((input: RequestInfo | URL) => {
+    const url = String(input)
+    const match = Object.keys(routeBodies).find((path) => url.includes(path))
+    const payload = match ? routeBodies[match] : body
+    return Promise.resolve({
+      ok: status >= 200 && status < 300,
+      status,
+      text: async () => JSON.stringify(payload),
+    })
   })
   vi.stubGlobal('fetch', fn)
   return fn
@@ -129,11 +142,22 @@ describe('LoginPage', () => {
   })
 
   it('leads to the dashboard after a successful login', async () => {
-    mockFetch(200, {
-      access_token: 'test-token',
-      token_type: 'bearer',
-      user: regularUser,
-    })
+    mockFetch(
+      200,
+      {
+        access_token: 'test-token',
+        token_type: 'bearer',
+        user: regularUser,
+      },
+      {
+        '/dashboard/metrics': {
+          open: 1,
+          overdue: 0,
+          closed_today: 0,
+          by_priority: { critical: 0, high: 0, medium: 0, low: 0 },
+        },
+      },
+    )
     renderWithProviders(<App />, '/login')
 
     fireEvent.change(screen.getByLabelText('E-Mail-Adresse'), {
