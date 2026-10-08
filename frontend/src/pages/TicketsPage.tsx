@@ -309,6 +309,30 @@ export default function TicketsPage() {
         <section className="tickets-list-section" data-od-id="tickets-list-section">
           <div className="toolbar" data-od-id="toolbar">
             <div className="search-wrap">
+              <svg
+                className="search-icon"
+                viewBox="0 0 20 20"
+                width="16"
+                height="16"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle
+                  cx="9"
+                  cy="9"
+                  r="5.25"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                />
+                <path
+                  d="M13 13l4 4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
+              </svg>
               <input
                 className="input search-input"
                 type="search"
@@ -454,7 +478,7 @@ export default function TicketsPage() {
             <div className="page-btns">
               <button
                 type="button"
-                className="page-btn"
+                className="page-btn page-arrow"
                 disabled={currentPage <= 1}
                 aria-label="Vorherige Seite"
                 onClick={() =>
@@ -464,7 +488,22 @@ export default function TicketsPage() {
                   )
                 }
               >
-                ‹
+                <svg
+                  viewBox="0 0 20 20"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M12.5 4.5 7 10l5.5 5.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
               {pageWindow(currentPage, pages).map((pageNumber) => (
                 <button
@@ -486,7 +525,7 @@ export default function TicketsPage() {
               ))}
               <button
                 type="button"
-                className="page-btn"
+                className="page-btn page-arrow"
                 disabled={currentPage >= pages}
                 aria-label="Nächste Seite"
                 onClick={() =>
@@ -496,7 +535,22 @@ export default function TicketsPage() {
                   )
                 }
               >
-                ›
+                <svg
+                  viewBox="0 0 20 20"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M7.5 4.5 13 10l-5.5 5.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           </div>

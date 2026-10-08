@@ -356,4 +356,43 @@ describe('TicketsPage', () => {
     expect(screen.getByText('Bitte wählen Sie eine Priorität.')).toBeTruthy()
     expect(createTicketMock).not.toHaveBeenCalled()
   })
+
+  it('keeps the toolbar controls on one row and right-aligns the export', async () => {
+    const { container } = renderPage()
+    await screen.findByText('Drucker defekt')
+
+    const toolbar = container.querySelector('.toolbar')
+    expect(toolbar).toBeTruthy()
+    expect(toolbar?.querySelector('.search-wrap .search-icon')).toBeTruthy()
+    expect(toolbar?.querySelector('input.search-input')).toBeTruthy()
+    expect(toolbar?.querySelectorAll('select.toolbar-select').length).toBe(3)
+    expect(toolbar?.querySelector('.toolbar-spacer')).toBeTruthy()
+    expect(
+      toolbar?.querySelector('.toolbar-spacer + .btn-secondary'),
+    ).toBeTruthy()
+  })
+
+  it('renders the pagination row with a page-size select and visible arrows', async () => {
+    dataset = Array.from({ length: 12 }, (_, index) =>
+      makeTicket({
+        id: index + 1,
+        title: `Ticket Nummer ${index + 1}`,
+        created_at: `2026-10-${String(index + 1).padStart(2, '0')}T08:00:00Z`,
+      }),
+    )
+    const { container } = renderPage()
+
+    expect(await screen.findByText('Zeige 1–10 von 12')).toBeTruthy()
+
+    const pagination = container.querySelector('.pagination')
+    expect(pagination?.querySelector('.pagination-info')).toBeTruthy()
+    expect(pagination?.querySelector('select.page-size-select')).toBeTruthy()
+
+    const previous = screen.getByLabelText('Vorherige Seite')
+    const next = screen.getByLabelText('Nächste Seite')
+    expect(previous.querySelector('svg')).toBeTruthy()
+    expect(next.querySelector('svg')).toBeTruthy()
+    expect((previous as HTMLButtonElement).disabled).toBe(true)
+    expect((next as HTMLButtonElement).disabled).toBe(false)
+  })
 })
