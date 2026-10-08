@@ -278,6 +278,44 @@ def test_non_admin_is_forbidden_on_admin_endpoints(client: TestClient) -> None:
     assert client.get("/api/v1/users/assignable", headers=_auth(agent_token)).status_code == 200
 
 
+def test_last_login_at_is_recorded_on_successful_login(client: TestClient) -> None:
+    _, admin_token = _make_user("admin")
+    user, user_token = _make_user("melder")
+
+    # A freshly created account that never logged in carries no timestamp.
+    before = client.get("/api/v1/users", headers=_auth(admin_token))
+    assert before.status_code == 200
+    before_by_id = {row["id"]: row for row in before.json()}
+    assert before_by_id[user.id]["last_login_at"] is None
+
+    # A successful login records the timestamp before the token is issued.
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"email": user.email, "password": PASSWORD},
+    )
+    assert login.status_code == 200
+    assert login.json()["user"]["last_login_at"] is not None
+
+    # The admin listing now shows the timestamp for the account that logged in.
+    after = client.get("/api/v1/users", headers=_auth(admin_token))
+    assert after.status_code == 200
+    after_by_id = {row["id"]: row for row in after.json()}
+    assert after_by_id[user.id]["last_login_at"] is not None
+
+    # The same timestamp reaches /auth/me and PATCH /users/{id}.
+    me = client.get("/api/v1/auth/me", headers=_auth(user_token))
+    assert me.status_code == 200
+    assert me.json()["last_login_at"] is not None
+
+    patched = client.patch(
+        f"/api/v1/users/{user.id}",
+        json={"role": "agent"},
+        headers=_auth(admin_token),
+    )
+    assert patched.status_code == 200
+    assert patched.json()["last_login_at"] is not None
+
+
 def test_users_endpoints_require_authentication(client: TestClient) -> None:
     valid_body = {
         "email": _email("noauth"),

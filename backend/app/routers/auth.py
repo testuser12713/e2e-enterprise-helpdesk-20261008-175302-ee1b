@@ -1,5 +1,7 @@
 """Authentication routes: registration, login and the current-user endpoint."""
 
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
@@ -71,6 +73,10 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=_UNAUTHORIZED)
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=_INACTIVE)
+
+    user.last_login_at = datetime.now(UTC)
+    db.commit()
+    db.refresh(user)
 
     token = create_access_token(user)
     return LoginResponse(access_token=token, token_type="bearer", user=user)
