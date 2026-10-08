@@ -7,11 +7,6 @@ import { AuthProvider } from '../state/AuthContext'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 
-const routerFuture = {
-  v7_startTransition: true,
-  v7_relativeSplatPath: true,
-} as const
-
 const regularUser = {
   id: 1,
   email: 'anna@nordwerk.de',
@@ -22,7 +17,7 @@ const regularUser = {
 
 function renderWithProviders(ui: ReactNode, path: string) {
   return render(
-    <MemoryRouter initialEntries={[path]} future={routerFuture}>
+    <MemoryRouter initialEntries={[path]}>
       <AuthProvider>{ui}</AuthProvider>
     </MemoryRouter>,
   )
