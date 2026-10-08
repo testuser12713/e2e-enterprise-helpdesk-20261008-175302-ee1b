@@ -43,7 +43,7 @@ def test_register_then_login_returns_token_and_user(client: TestClient) -> None:
     assert created["full_name"] == "Test Melder"
     assert created["role"] == "melder"
     assert created["is_active"] is True
-    assert set(created) == {"id", "email", "full_name", "role", "is_active"}
+    assert set(created) == {"id", "email", "full_name", "role", "is_active", "last_login_at"}
 
     response = _login(client, email)
     assert response.status_code == 200, response.text

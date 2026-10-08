@@ -1,5 +1,7 @@
 """Schemas shared across every router."""
 
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -13,6 +15,7 @@ class UserPublic(BaseModel):
     full_name: str
     role: str
     is_active: bool
+    last_login_at: datetime | None = None
 
 
 class ErrorBody(BaseModel):
