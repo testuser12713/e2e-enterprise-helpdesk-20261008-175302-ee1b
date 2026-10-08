@@ -1,0 +1,161 @@
+/* Dashboard metric cards and priority distribution bars (DESIGN.md MetricCard).
+   Scoped to the dashboard page; all values come from tokens.css. */
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.metric-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  min-height: 112px;
+}
+
+.metric-label {
+  font-size: var(--size-xs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-fg-muted);
+}
+
+.metric-value {
+  font-size: var(--size-2xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-height-tight);
+  margin-top: var(--space-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-sub {
+  font-size: var(--size-sm);
+  color: var(--color-fg-subtle);
+  margin-top: var(--space-0);
+}
+
+.metric-card.danger {
+  border-color: var(--color-danger-border);
+}
+
+.metric-card.danger .metric-value {
+  color: var(--color-danger);
+}
+
+.metric-card.success .metric-value {
+  color: var(--color-success);
+}
+
+/* Priority distribution bars — pure CSS, no chart library. */
+
+.prio-dist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.prio-row {
+  display: grid;
+  grid-template-columns: 96px 32px auto 1fr;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--size-sm);
+}
+
+.prio-row .prio-label {
+  color: var(--color-fg-muted);
+  font-weight: var(--weight-medium);
+}
+
+.prio-row .prio-count {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--color-fg);
+}
+
+.prio-bar {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.prio-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+}
+
+.prio-critical {
+  background: var(--color-priority-critical-fg);
+}
+
+.prio-high {
+  background: var(--color-priority-high-fg);
+}
+
+.prio-medium {
+  background: var(--color-priority-medium-fg);
+}
+
+.prio-low {
+  background: var(--color-priority-low-fg);
+}
+
+/* Loading skeleton cards (DESIGN.md LoadingState). */
+
+.metric-card .skeleton {
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+  animation: dashboard-shimmer 1.5s ease-in-out infinite;
+}
+
+.metric-card .skeleton-label {
+  height: 12px;
+  width: 60%;
+}
+
+.metric-card .skeleton-value {
+  height: 28px;
+  width: 40%;
+  margin-top: var(--space-3);
+}
+
+@keyframes dashboard-shimmer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.dashboard-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1199px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .prio-row {
+    grid-template-columns: 80px 28px auto 1fr;
+  }
+}
