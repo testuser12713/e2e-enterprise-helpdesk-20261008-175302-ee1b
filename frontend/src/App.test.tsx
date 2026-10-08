@@ -153,6 +153,22 @@ describe('App shell navigation', () => {
     }
   })
 
+  it('renders an icon for the brand and every nav entry', async () => {
+    renderApp('/', adminUser)
+
+    await screen.findByRole('link', { name: 'Dashboard' })
+    expect(
+      document.querySelector('.sidebar-brand .brand-mark svg'),
+      'brand-mark icon',
+    ).toBeTruthy()
+    for (const navId of ['nav-dashboard', 'nav-tickets', 'nav-users']) {
+      expect(
+        document.querySelector(`[data-od-id="${navId}"] svg`),
+        `icon for ${navId}`,
+      ).toBeTruthy()
+    }
+  })
+
   it('shows the admin-only navigation to administrators', async () => {
     renderApp('/', adminUser)
 
