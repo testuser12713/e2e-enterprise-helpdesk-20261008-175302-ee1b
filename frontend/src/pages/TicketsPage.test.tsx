@@ -166,10 +166,7 @@ function applyFilters(
 
 function renderPage() {
   return render(
-    <MemoryRouter
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      initialEntries={['/tickets']}
-    >
+    <MemoryRouter initialEntries={['/tickets']}>
       <TicketsPage />
     </MemoryRouter>,
   )
