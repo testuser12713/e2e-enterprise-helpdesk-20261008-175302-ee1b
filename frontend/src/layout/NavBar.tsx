@@ -8,7 +8,7 @@ const ROLE_LABELS: Record<Role, string> = {
 }
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
-  return isActive ? 'nav-link active' : 'nav-link'
+  return isActive ? 'nav-link nav-item active' : 'nav-link nav-item'
 }
 
 export default function NavBar() {
@@ -21,18 +21,22 @@ export default function NavBar() {
   }
 
   return (
-    <aside className="app-sidebar">
+    <aside className="app-sidebar sidebar" id="sidebar" data-od-id="sidebar">
       <div className="sidebar-brand">Helpdesk</div>
 
-      <nav className="sidebar-nav" aria-label="Hauptnavigation">
-        <NavLink to="/" end className={navLinkClass}>
+      <nav
+        className="sidebar-nav nav"
+        aria-label="Hauptnavigation"
+        data-od-id="main-nav"
+      >
+        <NavLink to="/" end className={navLinkClass} data-od-id="nav-dashboard">
           Dashboard
         </NavLink>
-        <NavLink to="/tickets" className={navLinkClass}>
+        <NavLink to="/tickets" className={navLinkClass} data-od-id="nav-tickets">
           Tickets
         </NavLink>
         {user?.role === 'admin' && (
-          <NavLink to="/users" className={navLinkClass}>
+          <NavLink to="/users" className={navLinkClass} data-od-id="nav-users">
             Benutzerverwaltung
           </NavLink>
         )}
@@ -40,14 +44,22 @@ export default function NavBar() {
 
       <div className="sidebar-spacer" />
 
-      <div className="sidebar-user">
+      <div
+        className="sidebar-user sidebar-bottom"
+        data-od-id="sidebar-user"
+      >
         {user && (
           <>
             <span className="sidebar-user-name">{user.full_name}</span>
             <span className="role-badge">{ROLE_LABELS[user.role]}</span>
           </>
         )}
-        <button type="button" className="btn btn-ghost" onClick={handleLogout}>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          data-od-id="logout-btn"
+          onClick={handleLogout}
+        >
           Abmelden
         </button>
       </div>

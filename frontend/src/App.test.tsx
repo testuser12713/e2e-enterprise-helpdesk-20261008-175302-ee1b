@@ -6,10 +6,7 @@ import { AuthProvider } from './state/AuthContext'
 
 function renderAt(path: string) {
   return render(
-    <MemoryRouter
-      initialEntries={[path]}
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    >
+    <MemoryRouter initialEntries={[path]}>
       <AuthProvider>
         <App />
       </AuthProvider>
@@ -31,6 +28,28 @@ describe('App shell', () => {
 
     expect(
       screen.queryByRole('link', { name: 'Benutzerverwaltung' }),
+    ).toBeNull()
+  })
+
+  it('exposes the sidebar regions named by the mockups', () => {
+    const { container } = renderAt('/')
+
+    const regions = [
+      'sidebar',
+      'main-nav',
+      'nav-dashboard',
+      'nav-tickets',
+      'sidebar-user',
+      'logout-btn',
+    ]
+    for (const region of regions) {
+      expect(
+        container.querySelector(`[data-od-id="${region}"]`),
+      ).not.toBeNull()
+    }
+    // Benutzerverwaltung is rendered only for administrators.
+    expect(
+      container.querySelector('[data-od-id="nav-users"]'),
     ).toBeNull()
   })
 
