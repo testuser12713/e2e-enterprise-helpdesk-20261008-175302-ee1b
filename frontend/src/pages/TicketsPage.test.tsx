@@ -242,6 +242,13 @@ describe('TicketsPage', () => {
       screen.getByText('Für die aktuellen Filter gibt es keine Treffer.'),
     ).toBeTruthy()
 
+    // With zero results only the '0 Tickets' count line remains: no page-size
+    // select, no page numbers and no arrows (AC-15).
+    expect(screen.getByText('0 Tickets')).toBeTruthy()
+    expect(screen.queryByLabelText('Einträge pro Seite')).toBeNull()
+    expect(screen.queryByLabelText('Nächste Seite')).toBeNull()
+    expect(screen.queryByLabelText('Vorherige Seite')).toBeNull()
+
     fireEvent.click(screen.getByRole('button', { name: 'Filter zurücksetzen' }))
 
     expect(await screen.findByText('Drucker defekt')).toBeTruthy()
