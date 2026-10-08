@@ -139,10 +139,45 @@ def _get_metrics(client: TestClient, token: str) -> dict:
     return response.json()
 
 
-def test_metrics_rejects_melder(client: TestClient, make_user: Callable) -> None:
-    _, token = make_user("melder")
+def test_metrics_melder_sees_only_own_tickets(
+    client: TestClient,
+    make_user: Callable,
+    create_ticket: Callable,
+) -> None:
+    melder, token = make_user("melder")
+    other, _ = make_user("melder")
+
+    # One ticket owned by the melder, two owned by somebody else.
+    create_ticket(created_by_id=melder.id, priority="critical", status="open")
+    create_ticket(created_by_id=other.id, priority="high", status="open")
+    create_ticket(created_by_id=other.id, priority="low", status="open")
+
     response = client.get("/api/v1/dashboard/metrics", headers=_auth(token))
-    assert response.status_code == 403
+    assert response.status_code == 200
+    body = response.json()
+
+    assert body["open"] == 1
+    assert body["by_priority"]["critical"] == 1
+    assert body["by_priority"]["high"] == 0
+    assert body["by_priority"]["low"] == 0
+    assert sum(body["by_priority"].values()) == 1
+
+
+def test_metrics_agent_sees_global_counts(
+    client: TestClient,
+    make_user: Callable,
+    create_ticket: Callable,
+) -> None:
+    user, token = make_user("agent")
+    create_ticket(created_by_id=user.id, priority="high", status="open")
+
+    body = _get_metrics(client, token)
+    expected = _stored_counts()
+
+    assert body["open"] == expected["open"]
+    assert body["overdue"] == expected["overdue"]
+    assert body["closed_today"] == expected["closed_today"]
+    assert body["by_priority"] == expected["by_priority"]
 
 
 def test_metrics_requires_authentication(client: TestClient) -> None:
