@@ -11,9 +11,19 @@
       "dir": "backend",
       "stack": "python",
       "kind": "server",
-      "depends_on": ["db"],
+      "depends_on": [
+        "db"
+      ],
       "install": [
-        ["${python}", "-m", "pip", "install", "-q", "-e", "."]
+        [
+          "${python}",
+          "-m",
+          "pip",
+          "install",
+          "-q",
+          "-e",
+          "."
+        ]
       ],
       "start": [
         "${python}",
@@ -29,17 +39,71 @@
       "port_env": "PORT",
       "health": {
         "path": "/api/v1/health",
-        "expect_status": [200]
+        "expect_status": [
+          200
+        ]
       },
       "env": {
-        "DATABASE_URL": { "dev": "${service:db.url}" },
-        "JWT_SECRET": { "generate": "hex", "bytes": 32 },
+        "DATABASE_URL": {
+          "dev": "${service:db.url}"
+        },
+        "JWT_SECRET": {
+          "generate": "hex",
+          "bytes": 32
+        },
         "ACCESS_TOKEN_EXPIRE_MINUTES": {
           "dev": "60",
           "not_secret": true,
           "why": "The access-token lifetime in minutes is public configuration; the signing key is JWT_SECRET."
         },
-        "CORS_ORIGINS": { "dev": "http://localhost:5173" }
+        "CORS_ORIGINS": {
+          "dev": "http://localhost:5173"
+        }
+      }
+    },
+    {
+      "name": "web",
+      "dir": "frontend",
+      "stack": "web-vite",
+      "kind": "server",
+      "install": [
+        [
+          "npm",
+          "ci",
+          "--no-audit",
+          "--no-fund"
+        ]
+      ],
+      "start": [
+        "npm",
+        "run",
+        "dev",
+        "--",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "${PORT}",
+        "--strictPort"
+      ],
+      "port": 5173,
+      "port_env": "PORT",
+      "health": {
+        "path": "/",
+        "expect_status": [
+          200
+        ]
+      },
+      "test": [
+        [
+          "npm",
+          "run",
+          "test"
+        ]
+      ],
+      "env": {
+        "VITE_API_BASE_URL": {
+          "dev": "http://localhost:8000"
+        }
       }
     }
   ]
