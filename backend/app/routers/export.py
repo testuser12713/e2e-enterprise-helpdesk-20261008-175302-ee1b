@@ -1,26 +1,35 @@
-"""CSV export route. Filled in by the export ticket."""
+"""CSV export route for the filtered ticket list."""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.orm import Session
 
-from app.core.errors import not_implemented
-from app.core.security import get_current_user
+from app.core.security import require_roles
 from app.db import get_db
 from app.models import User
+from app.services.csv_export import tickets_to_csv
+from app.services.ticket_query import TicketFilterParams, build_ticket_query
 
 router = APIRouter(prefix="/tickets", tags=["export"])
+
+CSV_MEDIA_TYPE = "text/csv; charset=utf-8"
+CSV_FILENAME = "tickets.csv"
 
 
 @router.get("/export")
 def export_tickets(
-    search: str | None = None,
-    status: str | None = None,
-    priority: str | None = None,
-    assignee_id: int | None = None,
-    sort: str = "due_at",
-    order: str = "asc",
-    current_user: User = Depends(get_current_user),
+    filters: TicketFilterParams = Depends(),
+    current_user: User = Depends(require_roles("agent", "admin")),
     db: Session = Depends(get_db),
-):
-    """Export the filtered ticket list as CSV. 501 until the export ticket lands."""
-    not_implemented("GET /tickets/export")
+) -> Response:
+    """Export the filtered, sorted ticket list as a CSV download.
+
+    Accepts the same filters as ``GET /tickets`` and applies no pagination, so
+    the file contains exactly the tickets the equally filtered list shows.
+    """
+    query = build_ticket_query(filters, current_user).limit(None).offset(None)
+    tickets = list(db.scalars(query).all())
+    return Response(
+        content=tickets_to_csv(tickets),
+        media_type=CSV_MEDIA_TYPE,
+        headers={"Content-Disposition": f'attachment; filename="{CSV_FILENAME}"'},
+    )
