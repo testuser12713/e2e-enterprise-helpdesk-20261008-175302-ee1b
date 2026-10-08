@@ -44,21 +44,37 @@
   border-radius: var(--radius-lg);
 }
 
-.search-wrap {
+/* Every rule below is scoped under .toolbar so it overrides the global
+   `.input/.select { width: 100% }` from index.css (same specificity, later
+   load order). Never change index.css or the global .select rule. */
+.toolbar .search-wrap {
+  position: relative;
   flex: 1 1 240px;
   min-width: 240px;
 }
 
-.search-input {
+.toolbar .search-icon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-2);
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  color: var(--color-fg-subtle);
+  pointer-events: none;
+}
+
+.toolbar .search-input {
   width: 100%;
+  padding-left: calc(var(--space-2) + 16px + var(--space-1));
 }
 
-.toolbar-select {
-  width: 180px;
+.toolbar .toolbar-select {
   flex: 0 0 auto;
+  width: 160px;
 }
 
-.toolbar-spacer {
+.toolbar .toolbar-spacer {
   flex: 1 1 auto;
 }
 
@@ -248,8 +264,10 @@
   font-size: var(--size-sm);
 }
 
-.page-size-select {
+/* Scoped so the global `.select { width: 100% }` cannot stretch it. */
+.pagination .page-size-select {
   width: auto;
+  flex: 0 0 auto;
   min-height: 32px;
   padding: 4px var(--space-1);
 }
@@ -289,6 +307,12 @@
 .page-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.page-arrow {
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
 }
 
 /* -------------------------------------------------------------- Modal */
@@ -363,19 +387,23 @@
   border-top: 1px solid var(--color-border);
 }
 
+/* The toolbar lays its controls on a single row whenever the available width
+   allows it and only wraps to a second line when it cannot; below 640px it
+   collapses into one column. */
 @media (max-width: 640px) {
   .toolbar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .search-wrap,
-  .toolbar-select {
+  .toolbar .search-wrap,
+  .toolbar .toolbar-select {
     width: 100%;
     flex-basis: auto;
+    min-width: 0;
   }
 
-  .toolbar-spacer {
+  .toolbar .toolbar-spacer {
     display: none;
   }
 
