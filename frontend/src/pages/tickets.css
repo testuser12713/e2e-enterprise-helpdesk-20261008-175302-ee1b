@@ -1,0 +1,385 @@
+/* Ticket list page — layout classes for the toolbar, filter chips, the
+   DataTable extensions (sortable headers, overdue rows), the pagination and the
+   create-ticket modal. All values come from the design tokens (DESIGN.md). */
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.tickets-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.page-section > .alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.alert-close {
+  margin-left: auto;
+  padding: 0 var(--space-0);
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: var(--size-md);
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------- Toolbar */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.search-wrap {
+  flex: 1 1 240px;
+  min-width: 240px;
+}
+
+.search-input {
+  width: 100%;
+}
+
+.toolbar-select {
+  width: 180px;
+  flex: 0 0 auto;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+/* -------------------------------------------------------- Filter chips */
+
+.filter-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-fg-muted);
+  font-size: var(--size-xs);
+  font-weight: var(--weight-medium);
+}
+
+.chip button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: var(--size-base);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chip-reset {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: var(--size-xs);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.result-count {
+  color: var(--color-fg-muted);
+  font-size: var(--size-sm);
+}
+
+/* ------------------------------------------------- DataTable extensions */
+
+.data-table .col-title {
+  min-width: 240px;
+}
+
+.sort-header {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-0);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.sort-header.active {
+  color: var(--color-fg);
+}
+
+.sort-caret {
+  font-size: var(--size-xs);
+  line-height: 1;
+}
+
+.data-table tbody tr {
+  cursor: pointer;
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-surface-alt);
+}
+
+.data-table tbody tr.row-overdue {
+  background: var(--color-overdue-row-bg);
+}
+
+.data-table tbody tr.row-overdue td:first-child {
+  box-shadow: inset 2px 0 0 var(--color-danger);
+}
+
+.data-table tbody tr.row-closed td {
+  color: var(--color-fg-muted);
+}
+
+.cell-due.due-overdue {
+  color: var(--color-danger);
+  font-weight: var(--weight-medium);
+}
+
+.priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+/* ------------------------------------------------------------ Empty state */
+
+.tickets-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+}
+
+.tickets-empty h3 {
+  font-size: var(--size-md);
+  font-weight: var(--weight-semibold);
+}
+
+.tickets-empty p {
+  margin: 0;
+  color: var(--color-fg-muted);
+  font-size: var(--size-base);
+}
+
+/* ---------------------------------------------------------- Loading state */
+
+.skeleton-table {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+  gap: var(--space-2);
+}
+
+.skeleton-row {
+  height: 24px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ Pagination */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pagination-info {
+  color: var(--color-fg-muted);
+  font-size: var(--size-sm);
+}
+
+.page-size-select {
+  width: auto;
+  min-height: 32px;
+  padding: 4px var(--space-1);
+}
+
+.page-btns {
+  display: flex;
+  align-items: center;
+  gap: var(--space-0);
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: inherit;
+  font-size: var(--size-sm);
+  cursor: pointer;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--color-surface-alt);
+}
+
+.page-btn.active {
+  background: var(--color-accent-subtle);
+  color: var(--color-accent);
+  font-weight: var(--weight-medium);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------------- Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-6) var(--space-3);
+  overflow-y: auto;
+  background: rgba(26, 29, 33, 0.45);
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 520px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(26, 29, 33, 0.18);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h2 {
+  font-size: var(--size-lg);
+}
+
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font-size: var(--size-lg);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: var(--color-surface-alt);
+}
+
+.modal-body {
+  padding: var(--space-4);
+}
+
+.modal-body .alert {
+  margin-bottom: var(--space-3);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap,
+  .toolbar-select {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .toolbar-spacer {
+    display: none;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+}
