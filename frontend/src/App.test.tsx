@@ -28,6 +28,14 @@ const agentUser: User = {
   is_active: true,
 }
 
+const melderUser: User = {
+  id: 3,
+  email: 'mia@nordwerk.de',
+  full_name: 'Mia Melder',
+  role: 'melder',
+  is_active: true,
+}
+
 const dashboardMetrics = {
   open: 0,
   overdue: 0,
@@ -184,6 +192,26 @@ describe('App shell navigation', () => {
     expect(
       screen.queryByRole('link', { name: 'Benutzerverwaltung' }),
     ).toBeNull()
+  })
+
+  it('never renders the admin-only navigation for a Melder, not even while the session is restored', async () => {
+    renderApp('/tickets', melderUser)
+
+    // The session is still being restored on this first frame (`user === null`,
+    // `isLoading`): the admin entry must not leak in for even one frame.
+    expect(screen.queryByText('Benutzerverwaltung')).toBeNull()
+    expect(document.querySelector('[data-od-id="nav-users"]')).toBeNull()
+    expect(document.querySelector('a[href="/users"]')).toBeNull()
+
+    await screen.findByText('Mia Melder')
+    expect(screen.getByText('Melder')).toBeTruthy()
+
+    expect(screen.queryByText('Benutzerverwaltung')).toBeNull()
+    expect(
+      screen.queryByRole('link', { name: 'Benutzerverwaltung' }),
+    ).toBeNull()
+    expect(document.querySelector('[data-od-id="nav-users"]')).toBeNull()
+    expect(document.querySelector('a[href="/users"]')).toBeNull()
   })
 
   it('leads to the login page after Abmelden', async () => {

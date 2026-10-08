@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth, type Role } from '../state/AuthContext'
+import type { ReactNode } from 'react'
+import { useAuth, type Role, type User } from '../state/AuthContext'
 
 const ROLE_LABELS: Record<Role, string> = {
   melder: 'Melder',
@@ -9,6 +10,19 @@ const ROLE_LABELS: Record<Role, string> = {
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
   return isActive ? 'nav-link active' : 'nav-link'
+}
+
+/**
+ * A single navigation entry. `data-od-id` is the stable selector the mockups
+ * and the browser tests use.
+ */
+interface NavItem {
+  to: string
+  label: string
+  icon: ReactNode
+  id: string
+  /** Only the dashboard is matched exactly (`end`) so it is not active on sub-routes. */
+  end?: boolean
 }
 
 function DashboardIcon() {
@@ -98,9 +112,60 @@ function BrandMark() {
   )
 }
 
+const DASHBOARD_ITEM: NavItem = {
+  to: '/',
+  label: 'Dashboard',
+  icon: <DashboardIcon />,
+  id: 'nav-dashboard',
+  end: true,
+}
+
+const TICKETS_ITEM: NavItem = {
+  to: '/tickets',
+  label: 'Tickets',
+  icon: <TicketsIcon />,
+  id: 'nav-tickets',
+}
+
+const USERS_ITEM: NavItem = {
+  to: '/users',
+  label: 'Benutzerverwaltung',
+  icon: <UsersIcon />,
+  id: 'nav-users',
+}
+
+/**
+ * The navigation entries every signed-in role sees. Explicit and complete: a
+ * role that is missing here falls back to the non-admin list, never to admin.
+ */
+const COMMON_ITEMS: readonly NavItem[] = [DASHBOARD_ITEM, TICKETS_ITEM]
+
+const NAV_ITEMS_BY_ROLE: Record<Role, readonly NavItem[]> = {
+  melder: COMMON_ITEMS,
+  agent: COMMON_ITEMS,
+  admin: [...COMMON_ITEMS, USERS_ITEM],
+}
+
+/**
+ * The sidebar entry list for a session. Derived once, so the admin entry can
+ * only appear for `role === 'admin'` and never while the session is still being
+ * restored (`isLoading`) or absent (`user === null`) — not even for one frame.
+ */
+export function navItemsFor(
+  user: User | null,
+  isLoading: boolean,
+): readonly NavItem[] {
+  if (isLoading || user === null) {
+    return COMMON_ITEMS
+  }
+  return NAV_ITEMS_BY_ROLE[user.role] ?? COMMON_ITEMS
+}
+
 export default function NavBar() {
-  const { user, logout } = useAuth()
+  const { user, isLoading, logout } = useAuth()
   const navigate = useNavigate()
+
+  const items = navItemsFor(user, isLoading)
 
   const handleLogout = () => {
     logout()
@@ -119,20 +184,18 @@ export default function NavBar() {
         aria-label="Hauptnavigation"
         data-od-id="main-nav"
       >
-        <NavLink to="/" end className={navLinkClass} data-od-id="nav-dashboard">
-          <DashboardIcon />
-          Dashboard
-        </NavLink>
-        <NavLink to="/tickets" className={navLinkClass} data-od-id="nav-tickets">
-          <TicketsIcon />
-          Tickets
-        </NavLink>
-        {user?.role === 'admin' && (
-          <NavLink to="/users" className={navLinkClass} data-od-id="nav-users">
-            <UsersIcon />
-            Benutzerverwaltung
+        {items.map((item) => (
+          <NavLink
+            key={item.id}
+            to={item.to}
+            end={item.end}
+            className={navLinkClass}
+            data-od-id={item.id}
+          >
+            {item.icon}
+            {item.label}
           </NavLink>
-        )}
+        ))}
       </nav>
 
       <div className="sidebar-spacer" />
