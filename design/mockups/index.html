@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anmeldung · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="auth-page" data-od-id="auth-page">
+    <section class="auth-card" data-od-id="login-card" aria-labelledby="login-title">
+      <div class="auth-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <h1 class="auth-title" id="login-title">Anmeldung</h1>
+      <p class="auth-sub">Interner IT-Support der Nordwerk GmbH</p>
+
+      <form id="login-form" novalidate>
+        <div class="form-summary" id="login-summary" role="alert">
+          Bitte korrigieren Sie die markierten Felder.
+        </div>
+
+        <div class="field" data-od-id="field-email">
+          <label class="field-label" for="login-email">E-Mail-Adresse</label>
+          <input class="field-control" type="email" id="login-email" name="email" autocomplete="username" placeholder="name@nordwerk.de" required />
+          <p class="field-error" id="login-email-error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+        </div>
+
+        <div class="field" data-od-id="field-password">
+          <label class="field-label" for="login-password">Passwort</label>
+          <input class="field-control" type="password" id="login-password" name="password" autocomplete="current-password" placeholder="••••••••" required />
+          <p class="field-error" id="login-password-error">Bitte geben Sie Ihr Passwort ein.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="login-submit" data-od-id="login-submit">Anmelden</button>
+        </div>
+      </form>
+
+      <p class="auth-foot">
+        Noch kein Konto? <a href="registration.html" data-od-id="login-to-register">Registrieren</a>
+      </p>
+
+      <div class="preview-links">
+        Vorschau — direkt zu einer Ansicht:
+        <nav>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="ticket-detail.html">Ticket-Detail</a>
+          <a href="users.html">Benutzerverwaltung</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('login-form');
+      var email = document.getElementById('login-email');
+      var password = document.getElementById('login-password');
+      var summary = document.getElementById('login-summary');
+
+      function validateEmail() {
+        var ok = email.value.trim() !== '' && OD.validEmail(email.value.trim());
+        return OD.setFieldError(email, ok, 'Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      }
+      function validatePassword() {
+        var ok = password.value.trim() !== '';
+        return OD.setFieldError(password, ok, 'Bitte geben Sie Ihr Passwort ein.');
+      }
+
+      email.addEventListener('blur', validateEmail);
+      email.addEventListener('input', function () { if (email.classList.contains('invalid')) validateEmail(); });
+      password.addEventListener('blur', validatePassword);
+      password.addEventListener('input', function () { if (password.classList.contains('invalid')) validatePassword(); });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var okEmail = validateEmail();
+        var okPassword = validatePassword();
+        if (!okEmail || !okPassword) {
+          summary.classList.add('visible');
+          var firstInvalid = form.querySelector('.field-control.invalid');
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+        summary.classList.remove('visible');
+        OD.toast('Anmeldung erfolgreich. Sie werden zum Dashboard weitergeleitet.', 'success');
+        setTimeout(function () { window.location.href = 'dashboard.html'; }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

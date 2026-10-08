@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ticket T-1047 · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <nav class="nav" data-od-id="main-nav">
+        <a class="nav-item" href="dashboard.html" data-od-id="nav-dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="tickets.html" data-od-id="nav-tickets">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7h18M8 3v4M16 3v4"/></svg>
+          Tickets
+        </a>
+        <a class="nav-item" href="users.html" data-od-id="nav-users">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Benutzerverwaltung
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom" data-od-id="sidebar-user">
+        <div class="user-chip">
+          <span class="avatar">SW</span>
+          <div>
+            <div class="user-name">Sarah Weber</div>
+            <div class="user-role">Administrator</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" type="button" data-od-id="logout-btn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Abmelden
+        </button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="content">
+      <header class="topbar" data-od-id="topbar">
+        <button class="btn btn-ghost btn-icon" id="menu-btn" type="button" aria-label="Menü öffnen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title">Helpdesk</span>
+      </header>
+
+      <div class="content-inner">
+        <a class="back-link" href="tickets.html" data-od-id="back-to-tickets">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Zurück zu Tickets
+        </a>
+
+        <header class="page-header" data-od-id="page-header">
+          <div>
+            <h1 data-od-id="page-title">Laptop startet nicht mehr</h1>
+            <div class="badge-row">
+              <span class="cell-id" style="font-family:var(--font-mono);font-size:var(--size-sm);color:var(--color-fg-muted);">T-1047</span>
+              <span class="badge badge-warning">in Bearbeitung</span>
+              <span class="badge badge-prio-critical"><span class="badge-prio-dot"></span>kritisch</span>
+              <span class="badge badge-overdue">
+                <svg class="icon" style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                überfällig
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <div class="detail-grid" data-od-id="detail-grid">
+          <!-- Left column: ticket data + audit -->
+          <div>
+            <section class="card" data-od-id="ticket-data-card">
+              <div class="section-title">Beschreibung</div>
+              <p style="margin:0 0 var(--space-4);">
+                Der Laptop (HP EliteBook, Inventarnr. 45-203) startet seit heute Morgen nicht mehr. Der Bildschirm bleibt schwarz, nur die Power-LED blinkt kurz auf. Wird am Montag dringend für den Außendienst benötigt.
+              </p>
+
+              <div class="detail-facts" data-od-id="ticket-facts">
+                <div>
+                  <div class="fact-label">Kategorie</div>
+                  <div class="fact-value">Hardware</div>
+                </div>
+                <div>
+                  <div class="fact-label">Priorität</div>
+                  <div class="fact-value">kritisch</div>
+                </div>
+                <div>
+                  <div class="fact-label">Status</div>
+                  <div class="fact-value">in Bearbeitung</div>
+                </div>
+                <div>
+                  <div class="fact-label">Zuständig</div>
+                  <div class="fact-value">Jonas Becker</div>
+                </div>
+                <div>
+                  <div class="fact-label">Erstellt am</div>
+                  <div class="fact-value num">06.10.2026, 09:12</div>
+                </div>
+                <div>
+                  <div class="fact-label">Fällig am</div>
+                  <div class="fact-value num" style="color:var(--color-danger);font-weight:500;">06.10.2026, 13:12</div>
+                </div>
+                <div>
+                  <div class="fact-label">Überfällig seit</div>
+                  <div class="fact-value" style="color:var(--color-danger);">2 Tagen</div>
+                </div>
+                <div>
+                  <div class="fact-label">Erstellt von</div>
+                  <div class="fact-value">Tim Schneider</div>
+                </div>
+              </div>
+
+              <div class="detail-actions" data-od-id="ticket-actions">
+                <div class="field assign-wrap">
+                  <label class="field-label" for="assign-select">Zuweisung</label>
+                  <select class="field-control" id="assign-select">
+                    <option value="none">Nicht zugewiesen</option>
+                    <option value="jonas" selected>Jonas Becker</option>
+                    <option value="lena">Lena Hoffmann</option>
+                  </select>
+                </div>
+                <button class="btn btn-secondary" type="button" id="assign-save" data-od-id="assign-save-btn">Zuweisung speichern</button>
+                <span style="flex:1;"></span>
+                <button class="btn btn-danger" type="button" id="close-ticket-btn" data-od-id="close-ticket-btn">Ticket schließen</button>
+              </div>
+            </section>
+
+            <section class="section" data-od-id="audit-section">
+              <div class="card">
+                <div class="section-title">Änderungsprotokoll</div>
+                <div class="audit-list" id="audit-list" data-od-id="audit-list">
+                  <div class="audit-entry">
+                    <span class="audit-time num">07.10.2026, 09:32</span>
+                    <span class="audit-actor">Jonas Becker</span>
+                    <span class="audit-change">Status: <span class="old">offen</span> → <span class="new">in Bearbeitung</span></span>
+                  </div>
+                  <div class="audit-entry">
+                    <span class="audit-time num">06.10.2026, 10:05</span>
+                    <span class="audit-actor">Sarah Weber</span>
+                    <span class="audit-change">Zuständigkeit: <span class="old">—</span> → <span class="new">Jonas Becker</span></span>
+                  </div>
+                  <div class="audit-entry">
+                    <span class="audit-time num">06.10.2026, 09:12</span>
+                    <span class="audit-actor">Tim Schneider</span>
+                    <span class="audit-change">Status: <span class="old">—</span> → <span class="new">offen</span></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Right column: comments -->
+          <div>
+            <section class="card" data-od-id="comments-card">
+              <div class="section-title">Kommentare</div>
+              <div class="comment-list" id="comment-list" data-od-id="comment-list">
+                <div class="comment">
+                  <span class="comment-avatar">JB</span>
+                  <div>
+                    <div class="comment-head"><span class="comment-author">Jonas Becker</span> · <span class="comment-time num">07.10.2026, 09:30</span></div>
+                    <div class="comment-body">Ersatzgerät ausgegeben, das defekte Gerät liegt zur Prüfung in der IT. Vermutlich defektes Netzteil — Ersatz ist bestellt.</div>
+                  </div>
+                </div>
+                <div class="comment">
+                  <span class="comment-avatar">TS</span>
+                  <div>
+                    <div class="comment-head"><span class="comment-author">Tim Schneider</span> · <span class="comment-time num">06.10.2026, 09:12</span></div>
+                    <div class="comment-body">Laptop startet seit heute Morgen nicht mehr, Bildschirm bleibt schwarz. Wird am Montag für den Außendienst benötigt.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="comment-composer" data-od-id="comment-composer">
+                <div class="field" style="margin-bottom:0;">
+                  <label class="field-label" for="comment-input">Kommentar abschreiben</label>
+                  <textarea class="field-control" id="comment-input" placeholder="Ihre Antwort …"></textarea>
+                  <p class="field-error">Bitte geben Sie einen Kommentar ein.</p>
+                </div>
+                <button class="btn btn-primary" type="button" id="comment-submit" disabled>Kommentar abschreiben</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Close ticket confirm dialog -->
+  <div class="modal" id="close-confirm" role="dialog" aria-modal="true" aria-labelledby="close-confirm-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel modal-confirm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="close-confirm-title">Ticket schließen?</h2>
+        <button class="modal-close" type="button" data-close aria-label="Schließen">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin:0;color:var(--color-fg-muted);">Sind Sie sicher, dass Sie das Ticket „Laptop startet nicht mehr“ schließen möchten? Dieser Vorgang wird im Änderungsprotokoll vermerkt.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" type="button" data-close data-autofocus>Abbrechen</button>
+        <button class="btn btn-danger" type="button" id="confirm-close">Ticket schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      OD.initShell();
+      OD.wireModals();
+
+      var commentInput = document.getElementById('comment-input');
+      var commentSubmit = document.getElementById('comment-submit');
+      var commentList = document.getElementById('comment-list');
+
+      commentInput.addEventListener('input', function () {
+        commentSubmit.disabled = commentInput.value.trim() === '';
+      });
+
+      commentSubmit.addEventListener('click', function () {
+        var text = commentInput.value.trim();
+        if (!text) {
+          OD.setFieldError(commentInput, false, 'Bitte geben Sie einen Kommentar ein.');
+          commentInput.focus();
+          return;
+        }
+        OD.clearFieldError(commentInput);
+
+        var entry = document.createElement('div');
+        entry.className = 'comment';
+        entry.innerHTML =
+          '<span class="comment-avatar">SW</span>' +
+          '<div>' +
+          '<div class="comment-head"><span class="comment-author">Sarah Weber</span> · <span class="comment-time num">08.10.2026, 10:05</span></div>' +
+          '<div class="comment-body"></div>' +
+          '</div>';
+        entry.querySelector('.comment-body').textContent = text;
+        commentList.appendChild(entry);
+
+        commentInput.value = '';
+        commentSubmit.disabled = true;
+        OD.toast('Kommentar wurde gespeichert.', 'success');
+        commentInput.focus();
+      });
+
+      document.getElementById('assign-save').addEventListener('click', function () {
+        var sel = document.getElementById('assign-select');
+        var name = sel.options[sel.selectedIndex].text;
+        OD.toast('Zuweisung aktualisiert: ' + name + '.', 'success');
+      });
+
+      document.getElementById('close-ticket-btn').addEventListener('click', function () {
+        OD.openDialog('close-confirm');
+      });
+
+      document.getElementById('confirm-close').addEventListener('click', function () {
+        OD.closeDialog('close-confirm');
+        OD.toast('Ticket wurde geschlossen.', 'success');
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', function () {
+        OD.toast('Sie wurden abgemeldet.', 'success');
+        setTimeout(function () { window.location.href = 'index.html'; }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

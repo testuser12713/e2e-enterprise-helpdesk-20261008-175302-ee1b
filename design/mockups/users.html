@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benutzerverwaltung · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <nav class="nav" data-od-id="main-nav">
+        <a class="nav-item" href="dashboard.html" data-od-id="nav-dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="tickets.html" data-od-id="nav-tickets">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7h18M8 3v4M16 3v4"/></svg>
+          Tickets
+        </a>
+        <a class="nav-item active" href="users.html" data-od-id="nav-users">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Benutzerverwaltung
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom" data-od-id="sidebar-user">
+        <div class="user-chip">
+          <span class="avatar">SW</span>
+          <div>
+            <div class="user-name">Sarah Weber</div>
+            <div class="user-role">Administrator</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" type="button" data-od-id="logout-btn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Abmelden
+        </button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="content">
+      <header class="topbar" data-od-id="topbar">
+        <button class="btn btn-ghost btn-icon" id="menu-btn" type="button" aria-label="Menü öffnen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title">Helpdesk</span>
+      </header>
+
+      <div class="content-inner">
+        <header class="page-header" data-od-id="page-header">
+          <div>
+            <h1 data-od-id="page-title">Benutzerverwaltung</h1>
+            <p class="page-desc">Benutzer anlegen, Rollen ändern und Konten deaktivieren.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="open-new-user" data-od-id="new-user-btn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Benutzer anlegen
+            </button>
+          </div>
+        </header>
+
+        <section data-od-id="users-list-section">
+          <div class="table-wrap" data-od-id="users-table-wrap">
+            <div class="table-scroll">
+              <table class="data-table" id="users-table">
+                <thead>
+                  <tr>
+                    <th class="col-title">Name</th>
+                    <th>E-Mail</th>
+                    <th>Rolle</th>
+                    <th>Status</th>
+                    <th>Letzte Anmeldung</th>
+                    <th>Aktionen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-od-id="user-row-sarah">
+                    <td class="col-title">Sarah Weber</td>
+                    <td>sarah.weber@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von Sarah Weber">
+                        <option>Melder</option>
+                        <option>Agent</option>
+                        <option selected>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-success">aktiv</span></td>
+                    <td class="cell-num">08.10.2026, 08:12</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" data-deactivate="Sarah Weber">Deaktivieren</button></td>
+                  </tr>
+                  <tr data-od-id="user-row-jonas">
+                    <td class="col-title">Jonas Becker</td>
+                    <td>jonas.becker@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von Jonas Becker">
+                        <option>Melder</option>
+                        <option selected>Agent</option>
+                        <option>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-success">aktiv</span></td>
+                    <td class="cell-num">08.10.2026, 07:58</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" data-deactivate="Jonas Becker">Deaktivieren</button></td>
+                  </tr>
+                  <tr data-od-id="user-row-lena">
+                    <td class="col-title">Lena Hoffmann</td>
+                    <td>lena.hoffmann@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von Lena Hoffmann">
+                        <option>Melder</option>
+                        <option selected>Agent</option>
+                        <option>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-success">aktiv</span></td>
+                    <td class="cell-num">07.10.2026, 16:40</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" data-deactivate="Lena Hoffmann">Deaktivieren</button></td>
+                  </tr>
+                  <tr data-od-id="user-row-tim">
+                    <td class="col-title">Tim Schneider</td>
+                    <td>tim.schneider@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von Tim Schneider">
+                        <option selected>Melder</option>
+                        <option>Agent</option>
+                        <option>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-success">aktiv</span></td>
+                    <td class="cell-num">08.10.2026, 09:05</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" data-deactivate="Tim Schneider">Deaktivieren</button></td>
+                  </tr>
+                  <tr data-od-id="user-row-anna">
+                    <td class="col-title">Anna Krüger</td>
+                    <td>anna.krueger@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von Anna Krüger">
+                        <option selected>Melder</option>
+                        <option>Agent</option>
+                        <option>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-success">aktiv</span></td>
+                    <td class="cell-num">06.10.2026, 10:22</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" data-deactivate="Anna Krüger">Deaktivieren</button></td>
+                  </tr>
+                  <tr class="row-closed" data-od-id="user-row-david">
+                    <td class="col-title">David Neumann</td>
+                    <td>david.neumann@nordwerk.de</td>
+                    <td>
+                      <select class="field-control" style="height:36px;width:150px;" aria-label="Rolle von David Neumann" disabled>
+                        <option selected>Melder</option>
+                        <option>Agent</option>
+                        <option>Administrator</option>
+                      </select>
+                    </td>
+                    <td><span class="badge badge-neutral">deaktiviert</span></td>
+                    <td class="cell-num">12.09.2026, 15:30</td>
+                    <td><button class="btn btn-danger btn-sm" type="button" disabled title="Dieser Benutzer ist bereits deaktiviert">Deaktivieren</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- New user modal -->
+  <div class="modal" id="new-user-modal" role="dialog" aria-modal="true" aria-labelledby="new-user-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2 class="modal-title" id="new-user-title">Benutzer anlegen</h2>
+        <button class="modal-close" type="button" data-close aria-label="Schließen">×</button>
+      </div>
+      <form id="new-user-form" novalidate>
+        <div class="modal-body">
+          <div class="form-summary" id="user-summary" role="alert">Bitte korrigieren Sie die markierten Felder.</div>
+
+          <div class="field">
+            <label class="field-label" for="nu-name">Name</label>
+            <input class="field-control" type="text" id="nu-name" placeholder="Vor- und Nachname" required />
+            <p class="field-error">Bitte geben Sie einen Namen ein.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nu-email">E-Mail-Adresse</label>
+            <input class="field-control" type="email" id="nu-email" placeholder="name@nordwerk.de" required />
+            <p class="field-error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nu-role">Rolle</label>
+            <select class="field-control" id="nu-role" required>
+              <option value="">Bitte wählen …</option>
+              <option>Melder</option>
+              <option>Agent</option>
+              <option>Administrator</option>
+            </select>
+            <p class="field-error">Bitte wählen Sie eine Rolle.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nu-password">Initiales Passwort</label>
+            <input class="field-control" type="password" id="nu-password" placeholder="Mindestens 8 Zeichen" required />
+            <p class="field-error">Das Passwort muss mindestens 8 Zeichen lang sein.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" type="button" data-close data-autofocus>Abbrechen</button>
+          <button class="btn btn-primary" type="submit">Benutzer anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Deactivate confirm dialog -->
+  <div class="modal" id="deactivate-confirm" role="dialog" aria-modal="true" aria-labelledby="deactivate-confirm-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel modal-confirm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="deactivate-confirm-title">Benutzer deaktivieren?</h2>
+        <button class="modal-close" type="button" data-close aria-label="Schließen">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin:0;color:var(--color-fg-muted);" id="deactivate-confirm-body">Sind Sie sicher, dass Sie diesen Benutzer deaktivieren möchten? Eine Anmeldung ist danach nicht mehr möglich.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" type="button" data-close data-autofocus>Abbrechen</button>
+        <button class="btn btn-danger" type="button" id="confirm-deactivate">Deaktivieren</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      OD.initShell();
+      OD.wireModals();
+
+      var deactivateName = '';
+
+      document.querySelectorAll('[data-deactivate]').forEach(function (btn) {
+        if (btn.disabled) return;
+        btn.addEventListener('click', function () {
+          deactivateName = btn.getAttribute('data-deactivate');
+          document.getElementById('deactivate-confirm-body').textContent =
+            'Sind Sie sicher, dass Sie „' + deactivateName + '“ deaktivieren möchten? Eine Anmeldung ist danach nicht mehr möglich.';
+          OD.openDialog('deactivate-confirm');
+        });
+      });
+
+      document.getElementById('confirm-deactivate').addEventListener('click', function () {
+        OD.closeDialog('deactivate-confirm');
+        OD.toast('Benutzer „' + deactivateName + '“ wurde deaktiviert.', 'success');
+      });
+
+      document.querySelectorAll('#users-table tbody select').forEach(function (sel) {
+        if (sel.disabled) return;
+        sel.addEventListener('change', function () {
+          var row = sel.closest('tr');
+          var name = row.querySelector('.col-title').textContent;
+          OD.toast('Rolle von „' + name + '“ geändert zu „' + sel.value + '“.', 'success');
+        });
+      });
+
+      // New user modal
+      var nuForm = document.getElementById('new-user-form');
+      var nuSummary = document.getElementById('user-summary');
+      var nuName = document.getElementById('nu-name');
+      var nuEmail = document.getElementById('nu-email');
+      var nuRole = document.getElementById('nu-role');
+      var nuPassword = document.getElementById('nu-password');
+
+      document.getElementById('open-new-user').addEventListener('click', function () { OD.openDialog('new-user-modal'); });
+
+      function vName() { return OD.setFieldError(nuName, nuName.value.trim() !== '', 'Bitte geben Sie einen Namen ein.'); }
+      function vEmail() {
+        var ok = nuEmail.value.trim() !== '' && OD.validEmail(nuEmail.value.trim());
+        return OD.setFieldError(nuEmail, ok, 'Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      }
+      function vRole() { return OD.setFieldError(nuRole, nuRole.value !== '', 'Bitte wählen Sie eine Rolle.'); }
+      function vPassword() {
+        var ok = nuPassword.value.length >= 8;
+        return OD.setFieldError(nuPassword, ok, 'Das Passwort muss mindestens 8 Zeichen lang sein.');
+      }
+
+      nuName.addEventListener('blur', vName);
+      nuName.addEventListener('input', function () { if (nuName.classList.contains('invalid')) vName(); });
+      nuEmail.addEventListener('blur', vEmail);
+      nuEmail.addEventListener('input', function () { if (nuEmail.classList.contains('invalid')) vEmail(); });
+      nuRole.addEventListener('blur', vRole);
+      nuRole.addEventListener('change', function () { if (nuRole.classList.contains('invalid')) vRole(); });
+      nuPassword.addEventListener('blur', vPassword);
+      nuPassword.addEventListener('input', function () { if (nuPassword.classList.contains('invalid')) vPassword(); });
+
+      nuForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ok = vName() & vEmail() & vRole() & vPassword();
+        if (!ok) {
+          nuSummary.classList.add('visible');
+          var firstInvalid = nuForm.querySelector('.field-control.invalid');
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+        nuSummary.classList.remove('visible');
+        OD.closeDialog('new-user-modal');
+        OD.toast('Benutzer „' + nuName.value.trim() + '“ wurde angelegt.', 'success');
+        nuForm.reset();
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', function () {
+        OD.toast('Sie wurden abgemeldet.', 'success');
+        setTimeout(function () { window.location.href = 'index.html'; }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

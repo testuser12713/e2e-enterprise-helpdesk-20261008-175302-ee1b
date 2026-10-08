@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tickets · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <nav class="nav" data-od-id="main-nav">
+        <a class="nav-item" href="dashboard.html" data-od-id="nav-dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="tickets.html" data-od-id="nav-tickets">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7h18M8 3v4M16 3v4"/></svg>
+          Tickets
+        </a>
+        <a class="nav-item" href="users.html" data-od-id="nav-users">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Benutzerverwaltung
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom" data-od-id="sidebar-user">
+        <div class="user-chip">
+          <span class="avatar">SW</span>
+          <div>
+            <div class="user-name">Sarah Weber</div>
+            <div class="user-role">Administrator</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" type="button" data-od-id="logout-btn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Abmelden
+        </button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="content">
+      <header class="topbar" data-od-id="topbar">
+        <button class="btn btn-ghost btn-icon" id="menu-btn" type="button" aria-label="Menü öffnen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title">Helpdesk</span>
+      </header>
+
+      <div class="content-inner">
+        <header class="page-header" data-od-id="page-header">
+          <div>
+            <h1 data-od-id="page-title">Tickets</h1>
+            <p class="page-desc">Alle Anfragen durchsuchen, filtern und sortieren.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" type="button" id="open-new-ticket" data-od-id="new-ticket-btn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Neues Ticket
+            </button>
+          </div>
+        </header>
+
+        <section data-od-id="tickets-list-section">
+          <div class="toolbar" data-od-id="toolbar">
+            <div class="search-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input class="field-control search-input" type="search" id="search-input" placeholder="Titel oder Beschreibung suchen" aria-label="Titel oder Beschreibung suchen" />
+            </div>
+
+            <select class="field-control" id="filter-status" aria-label="Nach Status filtern" style="width:180px;">
+              <option value="">Status: Alle</option>
+              <option value="offen">offen</option>
+              <option value="in-bearbeitung">in Bearbeitung</option>
+              <option value="geschlossen">geschlossen</option>
+            </select>
+
+            <select class="field-control" id="filter-priority" aria-label="Nach Priorität filtern" style="width:180px;">
+              <option value="">Priorität: Alle</option>
+              <option value="kritisch">kritisch</option>
+              <option value="hoch">hoch</option>
+              <option value="mittel">mittel</option>
+              <option value="niedrig">niedrig</option>
+            </select>
+
+            <select class="field-control" id="filter-agent" aria-label="Nach Zuständigkeit filtern" style="width:200px;">
+              <option value="">Zuständigkeit: Alle</option>
+              <option value="jonas">Jonas Becker</option>
+              <option value="lena">Lena Hoffmann</option>
+              <option value="none">Nicht zugewiesen</option>
+            </select>
+
+            <span class="toolbar-spacer"></span>
+
+            <button class="btn btn-secondary" type="button" id="csv-btn" data-od-id="csv-export-btn" title="Exportiert die aktuell gefilterte und sortierte Liste">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              CSV exportieren
+            </button>
+          </div>
+
+          <div class="filter-chips" id="filter-chips" data-od-id="filter-chips"></div>
+
+          <div class="result-count num" id="result-count">18 Tickets</div>
+
+          <div class="table-wrap" data-od-id="ticket-table-wrap">
+            <div class="table-scroll">
+              <table class="data-table" id="ticket-table">
+                <thead>
+                  <tr>
+                    <th><button class="th-sort" data-sort="id"><span>ID</span></button></th>
+                    <th class="col-title"><button class="th-sort" data-sort="title"><span>Titel</span></button></th>
+                    <th><button class="th-sort" data-sort="category"><span>Kategorie</span></button></th>
+                    <th><button class="th-sort" data-sort="priority"><span>Priorität</span></button></th>
+                    <th><button class="th-sort" data-sort="status"><span>Status</span></button></th>
+                    <th><button class="th-sort" data-sort="agent"><span>Zuständig</span></button></th>
+                    <th><button class="th-sort" data-sort="due"><span>Fälligkeit</span></button></th>
+                    <th><button class="th-sort active" data-sort="created"><span>Erstellt am</span> <svg class="icon sort-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button></th>
+                  </tr>
+                </thead>
+                <tbody id="ticket-body"></tbody>
+              </table>
+            </div>
+
+            <div class="table-empty" id="table-empty" hidden>
+              <svg class="icon empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7h18"/></svg>
+              <h3>Keine Tickets gefunden</h3>
+              <p>Für die aktuellen Filter gibt es keine Treffer.</p>
+              <button class="btn btn-secondary" type="button" id="reset-filters-empty">Filter zurücksetzen</button>
+            </div>
+          </div>
+
+          <div class="pagination" data-od-id="pagination">
+            <span class="pagination-info num" id="pagination-info">Zeige 1–10 von 18</span>
+            <select class="page-size-select" id="page-size-select" aria-label="Einträge pro Seite">
+              <option selected>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+            <div class="page-btns" id="page-btns"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- New ticket modal -->
+  <div class="modal" id="new-ticket-modal" role="dialog" aria-modal="true" aria-labelledby="new-ticket-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2 class="modal-title" id="new-ticket-title">Neues Ticket</h2>
+        <button class="modal-close" type="button" data-close aria-label="Schließen">×</button>
+      </div>
+      <form id="new-ticket-form" novalidate>
+        <div class="modal-body">
+          <div class="form-summary" id="ticket-summary" role="alert">Bitte korrigieren Sie die markierten Felder.</div>
+
+          <div class="field">
+            <label class="field-label" for="nt-title">Titel</label>
+            <input class="field-control" type="text" id="nt-title" placeholder="Kurze Beschreibung des Anliegens" required />
+            <p class="field-error">Bitte geben Sie einen Titel ein.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nt-category">Kategorie</label>
+            <select class="field-control" id="nt-category" required>
+              <option value="">Bitte wählen …</option>
+              <option>Hardware</option>
+              <option>Software</option>
+              <option>Zugang</option>
+              <option>Netzwerk</option>
+              <option>Sonstiges</option>
+            </select>
+            <p class="field-error">Bitte wählen Sie eine Kategorie.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nt-priority">Priorität</label>
+            <select class="field-control" id="nt-priority" required>
+              <option value="">Bitte wählen …</option>
+              <option>kritisch</option>
+              <option>hoch</option>
+              <option>mittel</option>
+              <option>niedrig</option>
+            </select>
+            <p class="field-error">Bitte wählen Sie eine Priorität.</p>
+            <p class="field-help">Fälligkeit: kritisch 4 Stunden, hoch 1 Tag, mittel 3 Tage, niedrig 7 Tage.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="nt-description">Beschreibung</label>
+            <textarea class="field-control" id="nt-description" placeholder="Beschreiben Sie das Problem so genau wie möglich" required></textarea>
+            <p class="field-error">Bitte geben Sie eine Beschreibung ein.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" type="button" data-close data-autofocus>Abbrechen</button>
+          <button class="btn btn-primary" type="submit">Ticket erstellen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      var TICKETS = [
+        { id: 'T-1048', title: 'E-Mail-Versand schlägt bei Marketing fehl', category: 'Software', priority: 'kritisch', status: 'in-bearbeitung', agent: 'lena', agentName: 'Lena Hoffmann', due: '08.10.2026, 16:40', created: '08.10.2026, 12:40', overdue: false },
+        { id: 'T-1047', title: 'Laptop startet nicht mehr', category: 'Hardware', priority: 'kritisch', status: 'in-bearbeitung', agent: 'jonas', agentName: 'Jonas Becker', due: '06.10.2026, 13:12', created: '06.10.2026, 09:12', overdue: true },
+        { id: 'T-1046', title: 'VPN-Zugang für neuen Kollegen', category: 'Zugang', priority: 'mittel', status: 'offen', agent: 'none', agentName: '—', due: '07.10.2026, 10:15', created: '06.10.2026, 10:15', overdue: true },
+        { id: 'T-1045', title: 'Drucker im 2. OG ohne Netzwerk', category: 'Hardware', priority: 'niedrig', status: 'offen', agent: 'none', agentName: '—', due: '14.10.2026', created: '07.10.2026, 09:02', overdue: false },
+        { id: 'T-1044', title: 'Passwort für Abteilung Finanzen zurücksetzen', category: 'Zugang', priority: 'hoch', status: 'in-bearbeitung', agent: 'jonas', agentName: 'Jonas Becker', due: '07.10.2026, 11:30', created: '06.10.2026, 11:30', overdue: true },
+        { id: 'T-1043', title: 'Neue Software für Design-Team', category: 'Software', priority: 'mittel', status: 'in-bearbeitung', agent: 'lena', agentName: 'Lena Hoffmann', due: '10.10.2026', created: '05.10.2026, 14:20', overdue: false },
+        { id: 'T-1042', title: 'WLAN im 3. OG instabil', category: 'Netzwerk', priority: 'hoch', status: 'offen', agent: 'jonas', agentName: 'Jonas Becker', due: '09.10.2026, 15:00', created: '08.10.2026, 09:40', overdue: false },
+        { id: 'T-1041', title: 'Fehlende Zugriffsrechte im CRM', category: 'Zugang', priority: 'mittel', status: 'offen', agent: 'none', agentName: '—', due: '11.10.2026', created: '08.10.2026, 08:15', overdue: false },
+        { id: 'T-1040', title: 'Laptop-Akkutausch', category: 'Hardware', priority: 'niedrig', status: 'in-bearbeitung', agent: 'lena', agentName: 'Lena Hoffmann', due: '12.10.2026', created: '08.10.2026, 07:50', overdue: false },
+        { id: 'T-1039', title: 'Software-Lizenz verlängern', category: 'Software', priority: 'mittel', status: 'offen', agent: 'none', agentName: '—', due: '12.10.2026', created: '07.10.2026, 16:00', overdue: false },
+        { id: 'T-1038', title: 'Beamer im Besprechungsraum defekt', category: 'Hardware', priority: 'niedrig', status: 'geschlossen', agent: 'jonas', agentName: 'Jonas Becker', due: '07.10.2026', created: '04.10.2026, 08:45', overdue: false },
+        { id: 'T-1037', title: 'E-Mail-Signatur einrichten', category: 'Software', priority: 'niedrig', status: 'geschlossen', agent: 'none', agentName: '—', due: '06.10.2026', created: '03.10.2026, 14:45', overdue: false },
+        { id: 'T-1036', title: 'Zugang zum Projektlaufwerk', category: 'Zugang', priority: 'mittel', status: 'geschlossen', agent: 'jonas', agentName: 'Jonas Becker', due: '05.10.2026', created: '02.10.2026, 11:30', overdue: false },
+        { id: 'T-1035', title: 'Laptop für Praktikant einrichten', category: 'Hardware', priority: 'mittel', status: 'geschlossen', agent: 'lena', agentName: 'Lena Hoffmann', due: '05.10.2026', created: '01.10.2026, 09:15', overdue: false },
+        { id: 'T-1034', title: 'VPN-Zertifikat abgelaufen', category: 'Netzwerk', priority: 'hoch', status: 'geschlossen', agent: 'jonas', agentName: 'Jonas Becker', due: '04.10.2026', created: '30.09.2026, 08:40', overdue: false },
+        { id: 'T-1033', title: 'Software-Update ausgerollt', category: 'Software', priority: 'niedrig', status: 'geschlossen', agent: 'none', agentName: '—', due: '04.10.2026', created: '29.09.2026, 16:20', overdue: false },
+        { id: 'T-1032', title: 'Druckerpatrone tauschen', category: 'Hardware', priority: 'niedrig', status: 'geschlossen', agent: 'none', agentName: '—', due: '03.10.2026', created: '28.09.2026, 13:10', overdue: false },
+        { id: 'T-1031', title: 'WLAN-Router Neustart', category: 'Netzwerk', priority: 'mittel', status: 'geschlossen', agent: 'lena', agentName: 'Lena Hoffmann', due: '03.10.2026', created: '27.09.2026, 10:05', overdue: false }
+      ];
+
+      var STATUS_LABEL = { 'offen': ['badge-info', 'offen'], 'in-bearbeitung': ['badge-warning', 'in Bearbeitung'], 'geschlossen': ['badge-neutral', 'geschlossen'] };
+      var PRIO_CLASS = { 'kritisch': 'badge-prio-critical', 'hoch': 'badge-prio-high', 'mittel': 'badge-prio-medium', 'niedrig': 'badge-prio-low' };
+      var PRIO_ORDER = { 'kritisch': 0, 'hoch': 1, 'mittel': 2, 'niedrig': 3 };
+      var STATUS_ORDER = { 'offen': 0, 'in-bearbeitung': 1, 'geschlossen': 2 };
+
+      var body = document.getElementById('ticket-body');
+      var searchInput = document.getElementById('search-input');
+      var filterStatus = document.getElementById('filter-status');
+      var filterPriority = document.getElementById('filter-priority');
+      var filterAgent = document.getElementById('filter-agent');
+      var chips = document.getElementById('filter-chips');
+      var resultCount = document.getElementById('result-count');
+      var emptyState = document.getElementById('table-empty');
+      var csvBtn = document.getElementById('csv-btn');
+      var paginationInfo = document.getElementById('pagination-info');
+      var pageBtns = document.getElementById('page-btns');
+      var pageSizeSelect = document.getElementById('page-size-select');
+
+      var sortKey = 'created';
+      var sortAsc = false;
+      var page = 1;
+      var pageSize = 10;
+
+      function prioBadge(prio) {
+        var dot = prio === 'kritisch' ? '<span class="badge-prio-dot"></span>' : '';
+        return '<span class="badge ' + PRIO_CLASS[prio] + '">' + dot + prio + '</span>';
+      }
+
+      function rowHtml(t) {
+        var s = STATUS_LABEL[t.status];
+        var closed = t.status === 'geschlossen' ? ' row-closed' : '';
+        var overdue = t.overdue ? ' row-overdue' : '';
+        var dueCell = t.overdue ? '<td class="cell-num cell-due">' + t.due + '</td>' : '<td class="cell-num">' + t.due + '</td>';
+        var overdueBadge = t.overdue
+          ? '<span class="badge badge-overdue"><svg class="icon" style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>überfällig</span>'
+          : '';
+        return '<tr class="' + (closed + overdue).trim() + '" tabindex="0">'
+          + '<td class="cell-id">' + t.id + '</td>'
+          + '<td class="col-title" title="' + t.title + '">' + t.title + '</td>'
+          + '<td>' + t.category + '</td>'
+          + '<td>' + prioBadge(t.priority) + '</td>'
+          + '<td><span class="badge ' + s[0] + '">' + s[1] + '</span> ' + overdueBadge + '</td>'
+          + '<td>' + t.agentName + '</td>'
+          + dueCell
+          + '<td class="cell-num">' + t.created + '</td>'
+          + '</tr>';
+      }
+
+      function filtered() {
+        var rows = TICKETS.slice();
+        var q = searchInput.value.trim().toLowerCase();
+        if (q) rows = rows.filter(function (t) { return t.title.toLowerCase().indexOf(q) !== -1; });
+        if (filterStatus.value) rows = rows.filter(function (t) { return t.status === filterStatus.value; });
+        if (filterPriority.value) rows = rows.filter(function (t) { return t.priority === filterPriority.value; });
+        if (filterAgent.value) rows = rows.filter(function (t) { return t.agent === filterAgent.value; });
+        rows.sort(function (a, b) {
+          var av, bv;
+          switch (sortKey) {
+            case 'priority': av = PRIO_ORDER[a.priority]; bv = PRIO_ORDER[b.priority]; break;
+            case 'status': av = STATUS_ORDER[a.status]; bv = STATUS_ORDER[b.status]; break;
+            case 'id': av = a.id; bv = b.id; break;
+            case 'category': av = a.category; bv = b.category; break;
+            case 'agent': av = a.agent; bv = b.agent; break;
+            case 'due': av = a.due; bv = b.due; break;
+            case 'created': av = a.created; bv = b.created; break;
+            default: av = a.title.toLowerCase(); bv = b.title.toLowerCase();
+          }
+          if (av < bv) return sortAsc ? -1 : 1;
+          if (av > bv) return sortAsc ? 1 : -1;
+          return 0;
+        });
+        return rows;
+      }
+
+      function renderPageButtons(total, pageCount) {
+        var html = '';
+        html += '<button class="page-btn" type="button" data-nav="prev" aria-label="Vorherige Seite"' + (page <= 1 ? ' disabled' : '') + '><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>';
+        for (var i = 1; i <= pageCount; i++) {
+          html += '<button class="page-btn' + (i === page ? ' active' : '') + '" type="button" data-nav="' + i + '">' + i + '</button>';
+        }
+        html += '<button class="page-btn" type="button" data-nav="next" aria-label="Nächste Seite"' + (page >= pageCount ? ' disabled' : '') + '><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>';
+        pageBtns.innerHTML = html;
+        pageBtns.querySelectorAll('[data-nav]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var nav = btn.getAttribute('data-nav');
+            if (nav === 'prev') page = Math.max(1, page - 1);
+            else if (nav === 'next') page = Math.min(pageCount, page + 1);
+            else page = parseInt(nav, 10);
+            render();
+          });
+        });
+      }
+
+      function render() {
+        var list = filtered();
+        var total = list.length;
+        var pageCount = Math.max(1, Math.ceil(total / pageSize));
+        if (page > pageCount) page = pageCount;
+        var start = (page - 1) * pageSize;
+        var visible = list.slice(start, start + pageSize);
+
+        body.innerHTML = visible.map(rowHtml).join('');
+        body.querySelectorAll('tr').forEach(function (tr) {
+          tr.addEventListener('click', function () { window.location.href = 'ticket-detail.html'; });
+        });
+
+        resultCount.textContent = total + ' Tickets';
+        emptyState.hidden = total !== 0;
+        body.style.display = total === 0 ? 'none' : '';
+        csvBtn.disabled = total === 0;
+        csvBtn.title = total === 0 ? 'Kein Ergebnis für den Export vorhanden' : 'Exportiert die aktuell gefilterte und sortierte Liste';
+
+        if (total === 0) {
+          paginationInfo.textContent = 'Zeige 0 von 0';
+        } else {
+          var end = Math.min(start + pageSize, total);
+          paginationInfo.textContent = 'Zeige ' + (start + 1) + '–' + end + ' von ' + total;
+        }
+        renderPageButtons(total, pageCount);
+      }
+
+      function renderChips() {
+        var defs = [];
+        if (filterStatus.value) defs.push({ label: 'Status: ' + STATUS_LABEL[filterStatus.value][1], target: filterStatus });
+        if (filterPriority.value) defs.push({ label: 'Priorität: ' + filterPriority.value, target: filterPriority });
+        if (filterAgent.value) {
+          var nm = filterAgent.value === 'none' ? 'Nicht zugewiesen' : (filterAgent.value === 'jonas' ? 'Jonas Becker' : 'Lena Hoffmann');
+          defs.push({ label: 'Zuständigkeit: ' + nm, target: filterAgent });
+        }
+        var html = '';
+        defs.forEach(function (d, i) {
+          html += '<span class="chip">' + d.label + '<button type="button" data-chip="' + i + '" aria-label="Filter entfernen"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>';
+        });
+        if (defs.length) html += '<button class="reset-link" type="button" id="reset-all">Alle zurücksetzen</button>';
+        chips.innerHTML = html;
+        chips.querySelectorAll('[data-chip]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            defs[parseInt(btn.getAttribute('data-chip'), 10)].target.value = '';
+            page = 1;
+            renderChips();
+            render();
+          });
+        });
+        var reset = document.getElementById('reset-all');
+        if (reset) reset.addEventListener('click', resetFilters);
+      }
+
+      function resetFilters() {
+        searchInput.value = '';
+        filterStatus.value = '';
+        filterPriority.value = '';
+        filterAgent.value = '';
+        page = 1;
+        renderChips();
+        render();
+      }
+
+      searchInput.addEventListener('input', function () { page = 1; render(); });
+      filterStatus.addEventListener('change', function () { page = 1; renderChips(); render(); });
+      filterPriority.addEventListener('change', function () { page = 1; renderChips(); render(); });
+      filterAgent.addEventListener('change', function () { page = 1; renderChips(); render(); });
+      pageSizeSelect.addEventListener('change', function () { pageSize = parseInt(pageSizeSelect.value, 10); page = 1; render(); });
+      document.getElementById('reset-filters-empty').addEventListener('click', resetFilters);
+
+      // Sortable headers
+      document.querySelectorAll('.th-sort').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.getAttribute('data-sort');
+          if (sortKey === key) { sortAsc = !sortAsc; }
+          else { sortKey = key; sortAsc = false; }
+          document.querySelectorAll('.th-sort').forEach(function (b) {
+            b.classList.remove('active');
+            var caret = b.querySelector('.sort-caret');
+            if (caret) caret.remove();
+          });
+          btn.classList.add('active');
+          var caret = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          caret.setAttribute('class', 'icon sort-caret' + (sortAsc ? ' asc' : ''));
+          caret.setAttribute('viewBox', '0 0 24 24');
+          caret.setAttribute('fill', 'none');
+          caret.setAttribute('stroke', 'currentColor');
+          caret.setAttribute('stroke-width', '2');
+          caret.setAttribute('stroke-linecap', 'round');
+          caret.setAttribute('stroke-linejoin', 'round');
+          caret.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+          btn.appendChild(caret);
+          page = 1;
+          render();
+        });
+      });
+
+      // CSV export (mock — no network)
+      csvBtn.addEventListener('click', function () {
+        if (csvBtn.disabled) return;
+        OD.toast('CSV-Datei wurde exportiert (ID, Titel, Kategorie, Priorität, Status, Zuständig, Fälligkeit, überfällig, erstellt am).', 'success');
+      });
+
+      // New ticket modal
+      var ntForm = document.getElementById('new-ticket-form');
+      var ntSummary = document.getElementById('ticket-summary');
+      var ntTitle = document.getElementById('nt-title');
+      var ntCategory = document.getElementById('nt-category');
+      var ntPriority = document.getElementById('nt-priority');
+      var ntDescription = document.getElementById('nt-description');
+
+      document.getElementById('open-new-ticket').addEventListener('click', function () { OD.openDialog('new-ticket-modal'); });
+
+      function vTitle() { return OD.setFieldError(ntTitle, ntTitle.value.trim() !== '', 'Bitte geben Sie einen Titel ein.'); }
+      function vCategory() { return OD.setFieldError(ntCategory, ntCategory.value !== '', 'Bitte wählen Sie eine Kategorie.'); }
+      function vPriority() { return OD.setFieldError(ntPriority, ntPriority.value !== '', 'Bitte wählen Sie eine Priorität.'); }
+      function vDescription() { return OD.setFieldError(ntDescription, ntDescription.value.trim() !== '', 'Bitte geben Sie eine Beschreibung ein.'); }
+
+      ntTitle.addEventListener('blur', vTitle);
+      ntTitle.addEventListener('input', function () { if (ntTitle.classList.contains('invalid')) vTitle(); });
+      ntCategory.addEventListener('blur', vCategory);
+      ntCategory.addEventListener('change', function () { if (ntCategory.classList.contains('invalid')) vCategory(); });
+      ntPriority.addEventListener('blur', vPriority);
+      ntPriority.addEventListener('change', function () { if (ntPriority.classList.contains('invalid')) vPriority(); });
+      ntDescription.addEventListener('blur', vDescription);
+      ntDescription.addEventListener('input', function () { if (ntDescription.classList.contains('invalid')) vDescription(); });
+
+      ntForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ok = vTitle() & vCategory() & vPriority() & vDescription();
+        if (!ok) {
+          ntSummary.classList.add('visible');
+          var firstInvalid = ntForm.querySelector('.field-control.invalid');
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+        ntSummary.classList.remove('visible');
+        OD.closeDialog('new-ticket-modal');
+        OD.toast('Ticket wurde angelegt.', 'success');
+        ntForm.reset();
+      });
+
+      OD.initShell();
+      OD.wireModals();
+
+      document.getElementById('logout-btn').addEventListener('click', function () {
+        OD.toast('Sie wurden abgemeldet.', 'success');
+        setTimeout(function () { window.location.href = 'index.html'; }, 700);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

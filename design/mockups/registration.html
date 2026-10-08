@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrieren · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="auth-page" data-od-id="auth-page">
+    <section class="auth-card" data-od-id="register-card" aria-labelledby="register-title">
+      <div class="auth-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <h1 class="auth-title" id="register-title">Konto anlegen</h1>
+      <p class="auth-sub">Neue Konten werden als Melder angelegt.</p>
+
+      <form id="register-form" novalidate>
+        <div class="form-summary" id="register-summary" role="alert">
+          Bitte korrigieren Sie die markierten Felder.
+        </div>
+
+        <div class="field" data-od-id="field-name">
+          <label class="field-label" for="reg-name">Name</label>
+          <input class="field-control" type="text" id="reg-name" name="name" autocomplete="name" placeholder="Vor- und Nachname" required />
+          <p class="field-error">Bitte geben Sie Ihren Namen ein.</p>
+        </div>
+
+        <div class="field" data-od-id="field-email">
+          <label class="field-label" for="reg-email">E-Mail-Adresse</label>
+          <input class="field-control" type="email" id="reg-email" name="email" autocomplete="username" placeholder="name@nordwerk.de" required />
+          <p class="field-error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
+        </div>
+
+        <div class="field" data-od-id="field-password">
+          <label class="field-label" for="reg-password">Passwort</label>
+          <input class="field-control" type="password" id="reg-password" name="password" autocomplete="new-password" placeholder="Mindestens 8 Zeichen" required />
+          <p class="field-error">Das Passwort muss mindestens 8 Zeichen lang sein.</p>
+        </div>
+
+        <div class="field" data-od-id="field-password-confirm">
+          <label class="field-label" for="reg-password-confirm">Passwort bestätigen</label>
+          <input class="field-control" type="password" id="reg-password-confirm" name="passwordConfirm" autocomplete="new-password" placeholder="Passwort wiederholen" required />
+          <p class="field-error">Die Passwörter stimmen nicht überein.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="register-submit" data-od-id="register-submit">Konto anlegen</button>
+        </div>
+      </form>
+
+      <p class="auth-foot">
+        Bereits registriert? <a href="index.html" data-od-id="register-to-login">Zur Anmeldung</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('register-form');
+      var name = document.getElementById('reg-name');
+      var email = document.getElementById('reg-email');
+      var password = document.getElementById('reg-password');
+      var confirm = document.getElementById('reg-password-confirm');
+      var summary = document.getElementById('register-summary');
+
+      function vName() { return OD.setFieldError(name, name.value.trim() !== '', 'Bitte geben Sie Ihren Namen ein.'); }
+      function vEmail() {
+        var ok = email.value.trim() !== '' && OD.validEmail(email.value.trim());
+        return OD.setFieldError(email, ok, 'Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      }
+      function vPassword() {
+        var ok = password.value.length >= 8;
+        return OD.setFieldError(password, ok, 'Das Passwort muss mindestens 8 Zeichen lang sein.');
+      }
+      function vConfirm() {
+        var ok = confirm.value !== '' && confirm.value === password.value;
+        return OD.setFieldError(confirm, ok, 'Die Passwörter stimmen nicht überein.');
+      }
+
+      name.addEventListener('blur', vName);
+      name.addEventListener('input', function () { if (name.classList.contains('invalid')) vName(); });
+      email.addEventListener('blur', vEmail);
+      email.addEventListener('input', function () { if (email.classList.contains('invalid')) vEmail(); });
+      password.addEventListener('blur', function () { vPassword(); if (confirm.value) vConfirm(); });
+      password.addEventListener('input', function () { if (password.classList.contains('invalid')) vPassword(); if (confirm.classList.contains('invalid')) vConfirm(); });
+      confirm.addEventListener('blur', vConfirm);
+      confirm.addEventListener('input', function () { if (confirm.classList.contains('invalid')) vConfirm(); });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ok = vName() & vEmail() & vPassword() & vConfirm();
+        if (!ok) {
+          summary.classList.add('visible');
+          var firstInvalid = form.querySelector('.field-control.invalid');
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+        summary.classList.remove('visible');
+        OD.toast('Konto erfolgreich angelegt. Sie können sich jetzt anmelden.', 'success');
+        setTimeout(function () { window.location.href = 'index.html'; }, 900);
+      });
+    })();
+  </script>
+</body>
+</html>

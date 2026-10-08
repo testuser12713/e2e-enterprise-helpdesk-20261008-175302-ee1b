@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard · Helpdesk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" data-od-id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/></svg>
+        </span>
+        <span class="brand-name">Helpdesk</span>
+      </div>
+
+      <nav class="nav" data-od-id="main-nav">
+        <a class="nav-item active" href="dashboard.html" data-od-id="nav-dashboard">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="tickets.html" data-od-id="nav-tickets">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 7h18M8 3v4M16 3v4"/></svg>
+          Tickets
+        </a>
+        <a class="nav-item" href="users.html" data-od-id="nav-users">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Benutzerverwaltung
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom" data-od-id="sidebar-user">
+        <div class="user-chip">
+          <span class="avatar">SW</span>
+          <div>
+            <div class="user-name">Sarah Weber</div>
+            <div class="user-role">Administrator</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" type="button" data-od-id="logout-btn">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Abmelden
+        </button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <main class="content">
+      <header class="topbar" data-od-id="topbar">
+        <button class="btn btn-ghost btn-icon" id="menu-btn" type="button" aria-label="Menü öffnen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title">Helpdesk</span>
+      </header>
+
+      <div class="content-inner">
+        <header class="page-header" data-od-id="page-header">
+          <div>
+            <h1 data-od-id="page-title">Dashboard</h1>
+            <p class="page-desc">Überblick über offene Anfragen und Kennzahlen.</p>
+          </div>
+          <div class="page-actions">
+            <a class="btn btn-primary" href="tickets.html" data-od-id="new-ticket-btn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Neues Ticket
+            </a>
+          </div>
+        </header>
+
+        <section class="metric-grid" data-od-id="metric-grid">
+          <article class="metric-card" data-od-id="metric-open">
+            <div class="metric-label">Offene Tickets</div>
+            <div class="metric-value num">10</div>
+            <div class="metric-sub">3 davon überfällig</div>
+          </article>
+
+          <article class="metric-card danger" data-od-id="metric-overdue">
+            <div class="metric-label">Überfällig</div>
+            <div class="metric-value num">3</div>
+            <div class="metric-sub">benötigen Aufmerksamkeit</div>
+          </article>
+
+          <article class="metric-card success" data-od-id="metric-closed-today">
+            <div class="metric-label">Heute geschlossen</div>
+            <div class="metric-value num">3</div>
+            <div class="metric-sub">abgeschlossene Tickets</div>
+          </article>
+
+          <article class="metric-card" data-od-id="metric-priority">
+            <div class="metric-label">Verteilung nach Priorität</div>
+            <div class="prio-dist">
+              <div class="prio-row">
+                <span class="prio-label">Kritisch</span>
+                <span class="prio-count num">2</span>
+                <span class="badge badge-prio-critical" style="padding:1px 8px;font-size:11px;">kritisch</span>
+                <div class="prio-bar"><span class="prio-critical" style="width: 29%;"></span></div>
+              </div>
+              <div class="prio-row">
+                <span class="prio-label">Hoch</span>
+                <span class="prio-count num">3</span>
+                <span class="badge badge-prio-high" style="padding:1px 8px;font-size:11px;">hoch</span>
+                <div class="prio-bar"><span class="prio-high" style="width: 43%;"></span></div>
+              </div>
+              <div class="prio-row">
+                <span class="prio-label">Mittel</span>
+                <span class="prio-count num">7</span>
+                <span class="badge badge-prio-medium" style="padding:1px 8px;font-size:11px;">mittel</span>
+                <div class="prio-bar"><span class="prio-medium" style="width: 100%;"></span></div>
+              </div>
+              <div class="prio-row">
+                <span class="prio-label">Niedrig</span>
+                <span class="prio-count num">6</span>
+                <span class="badge badge-prio-low" style="padding:1px 8px;font-size:11px;">niedrig</span>
+                <div class="prio-bar"><span class="prio-low" style="width: 86%;"></span></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="section" data-od-id="recent-tickets-section">
+          <div class="section-title">Zuletzt geänderte Tickets</div>
+          <div class="card" style="padding:0;">
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th class="col-title">Titel</th>
+                    <th>Priorität</th>
+                    <th>Status</th>
+                    <th>Zuständig</th>
+                    <th>Fälligkeit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr tabindex="0" onclick="location.href='ticket-detail.html'" data-od-id="recent-row-overdue">
+                    <td class="cell-id">T-1047</td>
+                    <td class="col-title">Laptop startet nicht mehr</td>
+                    <td><span class="badge badge-prio-critical"><span class="badge-prio-dot"></span>kritisch</span></td>
+                    <td><span class="badge badge-warning">in Bearbeitung</span></td>
+                    <td>Jonas Becker</td>
+                    <td class="cell-num cell-due" style="color:var(--color-danger);font-weight:500;">06.10.2026, 13:12</td>
+                  </tr>
+                  <tr tabindex="0" onclick="location.href='ticket-detail.html'" data-od-id="recent-row-2">
+                    <td class="cell-id">T-1046</td>
+                    <td class="col-title">VPN-Zugang für neuen Kollegen</td>
+                    <td><span class="badge badge-prio-medium">mittel</span></td>
+                    <td><span class="badge badge-info">offen</span></td>
+                    <td>—</td>
+                    <td class="cell-num">07.10.2026, 10:15</td>
+                  </tr>
+                  <tr tabindex="0" onclick="location.href='ticket-detail.html'" data-od-id="recent-row-3">
+                    <td class="cell-id">T-1048</td>
+                    <td class="col-title">E-Mail-Versand schlägt bei Marketing fehl</td>
+                    <td><span class="badge badge-prio-critical"><span class="badge-prio-dot"></span>kritisch</span></td>
+                    <td><span class="badge badge-warning">in Bearbeitung</span></td>
+                    <td>Lena Hoffmann</td>
+                    <td class="cell-num">08.10.2026, 16:40</td>
+                  </tr>
+                  <tr tabindex="0" onclick="location.href='ticket-detail.html'" data-od-id="recent-row-4">
+                    <td class="cell-id">T-1044</td>
+                    <td class="col-title">Passwort für Abteilung Finanzen zurücksetzen</td>
+                    <td><span class="badge badge-prio-high">hoch</span></td>
+                    <td><span class="badge badge-warning">in Bearbeitung</span></td>
+                    <td>Jonas Becker</td>
+                    <td class="cell-num" style="color:var(--color-danger);font-weight:500;">07.10.2026, 11:30</td>
+                  </tr>
+                  <tr tabindex="0" onclick="location.href='ticket-detail.html'" data-od-id="recent-row-5">
+                    <td class="cell-id">T-1043</td>
+                    <td class="col-title">Neue Software für Design-Team</td>
+                    <td><span class="badge badge-prio-medium">mittel</span></td>
+                    <td><span class="badge badge-warning">in Bearbeitung</span></td>
+                    <td>Lena Hoffmann</td>
+                    <td class="cell-num">10.10.2026</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    OD.initShell();
+    document.getElementById('logout-btn').addEventListener('click', function () {
+      OD.toast('Sie wurden abgemeldet.', 'success');
+      setTimeout(function () { window.location.href = 'index.html'; }, 700);
+    });
+  </script>
+</body>
+</html>
