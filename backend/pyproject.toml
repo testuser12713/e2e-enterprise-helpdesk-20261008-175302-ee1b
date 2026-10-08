@@ -1,0 +1,32 @@
+[project]
+name = "helpdesk-backend"
+version = "0.1.0"
+description = "Enterprise helpdesk API built with FastAPI."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.30,<1",
+    "sqlalchemy>=2.0,<3",
+    "alembic>=1.13,<2",
+    "pydantic-settings>=2.4,<3",
+    "psycopg[binary]>=3.2,<4",
+    "pyjwt>=2.9,<3",
+    "bcrypt>=4.2,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<9",
+    "httpx>=0.27,<1",
+    "ruff>=0.6,<1",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

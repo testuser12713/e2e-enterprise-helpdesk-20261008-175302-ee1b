@@ -1,0 +1,46 @@
+{
+  "runcontract": 1,
+  "services": [
+    {
+      "name": "db",
+      "kind": "database",
+      "engine": "postgres"
+    },
+    {
+      "name": "api",
+      "dir": "backend",
+      "stack": "python",
+      "kind": "server",
+      "depends_on": ["db"],
+      "install": [
+        ["${python}", "-m", "pip", "install", "-q", "-e", "."]
+      ],
+      "start": [
+        "${python}",
+        "-m",
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "${PORT}"
+      ],
+      "port": 8000,
+      "port_env": "PORT",
+      "health": {
+        "path": "/api/v1/health",
+        "expect_status": [200]
+      },
+      "env": {
+        "DATABASE_URL": { "dev": "${service:db.url}" },
+        "JWT_SECRET": { "generate": "hex", "bytes": 32 },
+        "ACCESS_TOKEN_EXPIRE_MINUTES": {
+          "dev": "60",
+          "not_secret": true,
+          "why": "The access-token lifetime in minutes is public configuration; the signing key is JWT_SECRET."
+        },
+        "CORS_ORIGINS": { "dev": "http://localhost:5173" }
+      }
+    }
+  ]
+}
