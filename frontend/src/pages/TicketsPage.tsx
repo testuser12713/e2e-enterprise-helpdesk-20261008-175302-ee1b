@@ -457,103 +457,109 @@ export default function TicketsPage() {
             onResetFilters={resetFilters}
           />
 
-          <div className="pagination">
-            <span className="pagination-info tnum">
-              {total === 0
-                ? 'Zeige 0 von 0'
-                : `Zeige ${start}–${end} von ${total}`}
-            </span>
-            <select
-              className="select page-size-select"
-              value={pageSize}
-              aria-label="Einträge pro Seite"
-              onChange={(event) =>
-                updateParams({ page_size: event.target.value })
-              }
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-            </select>
-            <div className="page-btns">
-              <button
-                type="button"
-                className="page-btn page-arrow"
-                disabled={currentPage <= 1}
-                aria-label="Vorherige Seite"
-                onClick={() =>
-                  updateParams(
-                    { page: String(currentPage - 1) },
-                    { resetPage: false },
-                  )
-                }
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <path
-                    d="M12.5 4.5 7 10l5.5 5.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              {pageWindow(currentPage, pages).map((pageNumber) => (
-                <button
-                  key={pageNumber}
-                  type="button"
-                  className={
-                    pageNumber === currentPage ? 'page-btn active' : 'page-btn'
+          {/* DESIGN.md 'Pagination': with zero results render no pagination
+              controls at all (AC-15) — only the '0 Tickets' count line above
+              remains. */}
+          {total > 0 && (
+            <div className="pagination">
+              <span className="pagination-info tnum">
+                {`Zeige ${start}–${end} von ${total}`}
+              </span>
+              {/* The page-size select appears only once there is more than one page. */}
+              {pages > 1 && (
+                <select
+                  className="select page-size-select"
+                  value={pageSize}
+                  aria-label="Einträge pro Seite"
+                  onChange={(event) =>
+                    updateParams({ page_size: event.target.value })
                   }
-                  aria-current={pageNumber === currentPage ? 'page' : undefined}
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                </select>
+              )}
+              <div className="page-btns">
+                <button
+                  type="button"
+                  className="page-btn page-arrow"
+                  disabled={currentPage <= 1}
+                  aria-label="Vorherige Seite"
                   onClick={() =>
                     updateParams(
-                      { page: String(pageNumber) },
+                      { page: String(currentPage - 1) },
                       { resetPage: false },
                     )
                   }
                 >
-                  {pageNumber}
+                  <svg
+                    viewBox="0 0 20 20"
+                    width="16"
+                    height="16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M12.5 4.5 7 10l5.5 5.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </button>
-              ))}
-              <button
-                type="button"
-                className="page-btn page-arrow"
-                disabled={currentPage >= pages}
-                aria-label="Nächste Seite"
-                onClick={() =>
-                  updateParams(
-                    { page: String(currentPage + 1) },
-                    { resetPage: false },
-                  )
-                }
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                  focusable="false"
+                {pageWindow(currentPage, pages).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    className={
+                      pageNumber === currentPage ? 'page-btn active' : 'page-btn'
+                    }
+                    aria-current={pageNumber === currentPage ? 'page' : undefined}
+                    onClick={() =>
+                      updateParams(
+                        { page: String(pageNumber) },
+                        { resetPage: false },
+                      )
+                    }
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className="page-btn page-arrow"
+                  disabled={currentPage >= pages}
+                  aria-label="Nächste Seite"
+                  onClick={() =>
+                    updateParams(
+                      { page: String(currentPage + 1) },
+                      { resetPage: false },
+                    )
+                  }
                 >
-                  <path
-                    d="M7.5 4.5 13 10l-5.5 5.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    viewBox="0 0 20 20"
+                    width="16"
+                    height="16"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M7.5 4.5 13 10l-5.5 5.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </section>
       )}
 

@@ -49,8 +49,12 @@
    load order). Never change index.css or the global .select rule. */
 .toolbar .search-wrap {
   position: relative;
-  flex: 1 1 240px;
-  min-width: 240px;
+  /* DESIGN.md 'TableToolbar' fixes the placeholder 'Titel oder Beschreibung
+     suchen' verbatim; 240px clips its last character once the magnifier icon
+     and the control padding are accounted for, so the wrapper needs the text
+     width and is allowed to grow. */
+  flex: 1 1 320px;
+  min-width: 320px;
 }
 
 .toolbar .search-icon {
